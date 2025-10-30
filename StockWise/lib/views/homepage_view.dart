@@ -126,7 +126,7 @@ class HomePageView extends StatelessWidget {
                         // Out of Stock card
                         Expanded(
                           child: GestureDetector(
-                            onTap: () => Get.to(() => const OutOfStockView()),
+                            onTap: () => Get.to(() => const OutofstockView()),
                             child: Obx(() => Container(
                                   height: 150,
                                   margin: const EdgeInsets.all(8),
@@ -214,7 +214,7 @@ class HomePageView extends StatelessWidget {
                         // All Products card
                         Expanded(
                           child: GestureDetector(
-                            onTap: () => Get.to(() => const AllProductsView()),
+                            onTap: () => Get.to(() => const AllproductsView()),
                             child: Obx(() => Container(
                                   height: 150,
                                   margin: const EdgeInsets.all(8),

@@ -1,45 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 
-
-// This is your All Products Page
-class AllProductsView extends StatefulWidget {
-  const AllProductsView({super.key});
+class AllproductsView extends StatefulWidget {
+  const AllproductsView({super.key});
 
   @override
-  State<AllProductsView> createState() => _AllProductsPageState();
+  State<AllproductsView> createState() => _AllproductsViewState();
 }
 
-class _AllProductsPageState extends State<AllProductsView> {
-  // Dummy data to display in the product list
-  List<Map<String, dynamic>> products = [
-    {"name": "CK One", "description": "Product Description", "qty": 4, "id": "3239812"},
-    {"name": "Versace Eros EDP/EDT", "description": "Product Description", "qty": 3492, "id": "3239812"},
-    {"name": "CK One", "description": "Product Description", "qty": 4, "id": "3239812"},
-    {"name": "Versace Eros EDP/EDT", "description": "Product Description", "qty": 3492, "id": "3239812"},
-    {"name": "CK One", "description": "Product Description", "qty": 4, "id": "3239812"},
+class _AllproductsViewState extends State<AllproductsView> {
+  final TextEditingController _searchController = TextEditingController();
+
+  final List<Map<String, dynamic>> _allItems = [
+    {
+      'name': 'CK One',
+      'description': 'Product Description',
+      'qty': 4,
+      'id': '3239812'
+    },
+    {
+      'name': 'Versace Eros EDP/EDT',
+      'description': 'Product Description',
+      'qty': 3492,
+      'id': '3239812'
+    },
+    {
+      'name': 'Dior Sauvage',
+      'description': 'Product Description',
+      'qty': 7,
+      'id': '13223'
+    },
+    {
+      'name': 'Chanel Bleu',
+      'description': 'Product Description',
+      'qty': 3,
+      'id': '88991'
+    },
+    {
+      'name': 'CK One Shock',
+      'description': 'Product Description',
+      'qty': 5,
+      'id': '445566'
+    },
+    {
+      'name': 'CK One Shock',
+      'description': 'Product Description ',
+      'qty': 5,
+      'id': '445566'
+    },
   ];
 
-  // This will store the filtered list based on search
-  List<Map<String, dynamic>> filteredProducts = [];
-
-  // Controller for the search text field
-  TextEditingController searchController = TextEditingController();
+  List<Map<String, dynamic>> _filteredItems = [];
 
   @override
   void initState() {
     super.initState();
-    filteredProducts = products; // Show all products initially
+    _filteredItems = _allItems;
   }
 
-  // Function that filters products based on search input
-  void filterSearch(String query) {
+  void _onSearchChanged(String query) {
+    final lower = query.toLowerCase();
     setState(() {
-      filteredProducts = products.where((product) {
-        // Convert both query and fields to lowercase for case-insensitive matching
-        final name = product['name'].toString().toLowerCase();
-        final id = product['id'].toString().toLowerCase();
-        final q = query.toLowerCase();
-        return name.contains(q) || id.contains(q);
+      _filteredItems = _allItems.where((item) {
+        final name = item['name'].toString().toLowerCase();
+        final id = item['id'].toString().toLowerCase();
+        return name.contains(lower) || id.contains(lower);
       }).toList();
     });
   }
@@ -47,118 +73,336 @@ class _AllProductsPageState extends State<AllProductsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // AppBar fixed on top (won’t scroll away)
       appBar: AppBar(
-        automaticallyImplyLeading: false, // remove default back button
-        title: const Text(
-          "All Products",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        actions: [
-          // Add button on the right
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: ElevatedButton(
-              onPressed: () {
-                // Action when Add is clicked
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Add button clicked")),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                "Add",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-        ],
+        backgroundColor: Colors.white,
+        title: Text("All Products"),
         leading: IconButton(
-          // Back button to go back to the home page
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context); // Navigates back to previous screen
-          },
+          icon: Icon(
+            Icons.arrow_back,
+            size: 32,
+          ),
+          onPressed: () => Get.back(),
         ),
-      ),
-
-      // The body contains a column with search bar and product list
-      body: Column(
-        children: [
-          // Search bar section
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextField(
-              controller: searchController,
-              onChanged: filterSearch, // Real-time search
-              decoration: InputDecoration(
-                hintText: "Search",
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+        actions: [
+          Container(
+            height: 34,
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: TextButton(
+              onPressed: () {
+                Get.defaultDialog(
+                    title: "",
+                    titlePadding: EdgeInsets.zero,
+                    contentPadding: EdgeInsets.zero,
+                    backgroundColor: Colors.white,
+                    content: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                      child: Column(
+                        children: [
+                          Align(
+                              alignment: AlignmentGeometry.topLeft,
+                              child: Text("Name")),
+                          SizedBox(height: 6),
+                          Align(
+                            alignment: AlignmentGeometry.topLeft,
+                            child: Container(
+                              height: 45,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey,
+                                ),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: TextField(
+                                controller: _searchController,
+                                onChanged: _onSearchChanged,
+                                textAlign: TextAlign.left,
+                                textAlignVertical: TextAlignVertical.center,
+                                style: TextStyle(
+                                    decoration: TextDecoration.none,
+                                    decorationThickness: 0),
+                                decoration: InputDecoration(
+                                    isDense: true,
+                                    hintText: 'Product Name',
+                                    hintStyle: GoogleFonts.poppins(
+                                        color: Colors.grey.shade400),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    enabledBorder: InputBorder.none,
+                                    border: InputBorder.none),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Align(
+                              alignment: AlignmentGeometry.topLeft,
+                              child: Text("Quantity")),
+                          SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Container(
+                                height: 43,
+                                width: 43,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1.5,
+                                    color: Colors.black,
+                                  ),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '-',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 18),
+                              Text(
+                                "4",
+                                style: TextStyle(
+                                    fontSize: 32, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(width: 18),
+                              Container(
+                                height: 43,
+                                width: 43,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1.5,
+                                    color: Colors.black,
+                                  ),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '+',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 32),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 142,
+                                height: 43,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.black,
+                                ),
+                                child: Align(
+                                  alignment: AlignmentGeometry.center,
+                                  child: Text(
+                                    "Add",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Container(
+                                height: 43,
+                                width: 43,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1.5,
+                                    color: Colors.black,
+                                  ),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '❌',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ));
+                print("Add button clicked");
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                minimumSize: Size.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              child: Text(
+                "Add",
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
           ),
-
-          // Item count text
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                "${filteredProducts.length} items",
-                style: const TextStyle(fontSize: 14, color: Colors.grey),
+          SizedBox(
+            width: 37,
+          )
+        ],
+      ),
+      body: Container(
+        color: Colors.white,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Search Bar
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              child: TextField(
+                controller: _searchController,
+                onChanged: _onSearchChanged,
+                style: GoogleFonts.poppins(fontSize: 14),
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  hintStyle: GoogleFonts.poppins(color: Colors.grey.shade400),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Colors.grey.shade300),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: Colors.black),
+                  ),
+                ),
               ),
             ),
-          ),
 
-          // Expanded widget makes the ListView scrollable
-          Expanded(
-            child: ListView.builder(
-              itemCount: filteredProducts.length,
-              itemBuilder: (context, index) {
-                final product = filteredProducts[index];
-                return ListTile(
-                  // Product image (placeholder)
-                  leading: Container(
-                    width: 45,
-                    height: 45,
-                    decoration: BoxDecoration(
-                      color: Colors.black12,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(Icons.image, color: Colors.black),
-                  ),
-
-                  // Product name and description
-                  title: Text(product['name']),
-                  subtitle: Text(product['description']),
-
-                  // Product quantity and ID
-                  trailing: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text("Qty: ${product['qty']}"),
-                      Text(
-                        "Product ID: ${product['id']}",
-                        style: const TextStyle(color: Colors.grey, fontSize: 12),
-                      ),
-                    ],
-                  ),
-                );
-              },
+            // Item count
+            Padding(
+              padding: const EdgeInsets.only(right: 18),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  '${_filteredItems.length} items',
+                  style: GoogleFonts.poppins(
+                      fontSize: 12, color: Colors.grey.shade600),
+                ),
+              ),
             ),
-          ),
-        ],
+
+            // Scrollable List
+            Expanded(
+              child: ListView.builder(
+                itemCount: _filteredItems.length,
+                itemBuilder: (context, index) {
+                  final item = _filteredItems[index];
+                  return Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // Image placeholder
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Icon(Icons.image,
+                              color: Colors.white, size: 28),
+                        ),
+                        const SizedBox(width: 12),
+
+                        // Product Name and Description
+                        Expanded(
+                          flex: 4,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item['name'],
+                                style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                item['description'],
+                                style: GoogleFonts.poppins(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // Qty - CENTER SECTION
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Qty',
+                                style: GoogleFonts.poppins(
+                                    fontSize: 13, color: Colors.black87),
+                              ),
+                              Text(
+                                '${item['qty']}',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // Product ID - RIGHT SIDE
+                        Expanded(
+                          flex: 3,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                'Product ID',
+                                style: GoogleFonts.poppins(
+                                    fontSize: 13, color: Colors.black87),
+                              ),
+                              Text(
+                                item['id'],
+                                style: GoogleFonts.poppins(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
