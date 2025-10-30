@@ -7,6 +7,7 @@ import 'outofstock_view.dart';
 import 'lowstock_view.dart';
 import 'history_view.dart';
 import 'allproducts_view.dart';
+import 'login_view.dart';
 
 class HomePageView extends StatelessWidget {
   const HomePageView({super.key});
@@ -21,9 +22,14 @@ class HomePageView extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.warning_rounded,
-                  color: Colors.red, size: 48), // red alert icon
+              // 🚨 Siren icon at the top
+              Image.asset(
+                'assets/images/Siren.png', // path to your siren image
+                width: 80,
+                height: 80,
+              ),
               const SizedBox(height: 16),
+
               const Text(
                 "Are you sure you want to logout?",
                 textAlign: TextAlign.center,
@@ -35,6 +41,7 @@ class HomePageView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -45,8 +52,8 @@ class HomePageView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8)),
                     ),
                     onPressed: () {
-                      Navigator.pop(context); // close dialog
-                      Get.offAllNamed("/login"); // now this should work
+                      Get.back(); // close dialog
+                      Get.offAll(() => const LoginView()); // go to Login
                     },
                     child: const Text("Yes, I am sure",
                         style: TextStyle(color: Colors.white)),
@@ -57,7 +64,7 @@ class HomePageView extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8)),
                     ),
-                    onPressed: () => Navigator.pop(context), // just close
+                    onPressed: () => Get.back(), // just close
                     child: const Text("❌",
                         style: TextStyle(color: Colors.black87)),
                   ),
@@ -118,7 +125,8 @@ class HomePageView extends StatelessWidget {
             // 🔲 Grid with 2 rows x 2 columns
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 35), // match Trello padding
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 35), // match Trello padding
                 child: Column(
                   children: [
                     Row(
@@ -137,10 +145,12 @@ class HomePageView extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.all(16),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          controller.outOfStock.value.toString(),
+                                          controller.outOfStock.value
+                                              .toString(),
                                           style: const TextStyle(
                                             fontFamily: "Poppins",
                                             fontSize: 48,
@@ -179,7 +189,8 @@ class HomePageView extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.all(16),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           controller.lowStock.value.toString(),
@@ -208,7 +219,6 @@ class HomePageView extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     Row(
                       children: [
                         // All Products card
@@ -225,10 +235,12 @@ class HomePageView extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.all(16),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          controller.totalItems.value.toString(),
+                                          controller.totalItems.value
+                                              .toString(),
                                           style: const TextStyle(
                                             fontFamily: "Poppins",
                                             fontSize: 48,

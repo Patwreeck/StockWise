@@ -7,6 +7,69 @@ import 'homepage_view.dart'; // ✅ import homepage
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
 
+  // 🚨 Wrong password dialog
+  void _showErrorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // 🔹 Title
+
+              // 🚨 Siren Icon (add your image here)
+              Image.asset(
+                "assets/images/Siren.png", // ⚠️ Add this image to your assets folder
+                height: 70,
+                width: 70,
+              ),
+              const SizedBox(height: 20),
+
+              // 💬 Message Text
+              const Text(
+                "Oops. Is your email or password correct?",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // 🖤 Try Again Button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text(
+                    "Try again",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final loginController = Get.put(LoginController());
@@ -23,12 +86,12 @@ class LoginView extends StatelessWidget {
               children: [
                 // Logo / Placeholder
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(20), // rounded corners
+                  borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
                     "assets/images/loginLogo.png",
                     height: 120,
                     width: 120,
-                    fit: BoxFit.cover, // fills the square nicely
+                    fit: BoxFit.cover,
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -95,7 +158,7 @@ class LoginView extends StatelessWidget {
                                     if (formKey.currentState!.validate()) {
                                       await loginController.login();
 
-                                      // ✅ Check credentials here
+                                      // ✅ Check credentials
                                       final email = loginController
                                           .emailController.text
                                           .trim();
@@ -105,7 +168,10 @@ class LoginView extends StatelessWidget {
 
                                       if (email == "test123@gmail.com" &&
                                           password == "bscs123!") {
-                                        Get.offAll(() =>  HomePageView());
+                                        Get.offAll(() => HomePageView());
+                                      } else {
+                                        // ❌ Wrong password → show dialog
+                                        _showErrorDialog(context);
                                       }
                                     }
                                   },
